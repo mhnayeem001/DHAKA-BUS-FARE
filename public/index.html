@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhaka Bus Fare - Find Your Route</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-bus me-2"></i>
+                <span data-en="Dhaka Bus Fare" data-bn="ঢাকা বাস ভাড়া">Dhaka Bus Fare</span>
+            </a>
+            
+            <div class="d-flex align-items-center">
+                <!-- Language Toggle -->
+                <button class="btn btn-outline-light btn-sm me-2" id="languageToggle" title="Language">
+                    <i class="fas fa-language"></i>
+                    <span id="currentLang">EN</span>
+                </button>
+                
+                <!-- Theme Toggle -->
+                <button class="btn btn-outline-light btn-sm me-2" id="themeToggle" title="Toggle Theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                
+                <!-- Admin Link -->
+                <a href="/admin" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-cog"></i>
+                    <span data-en="Admin" data-bn="অ্যাডমিন">Admin</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mt-5 pt-4">
+        <!-- Hero Section -->
+        <section class="hero-section text-center mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-5 fw-bold mb-3" data-en="Find Your Bus Fare" data-bn="আপনার বাস ভাড়া খুঁজুন">
+                        Find Your Bus Fare
+                    </h1>
+                    <p class="lead" data-en="Get accurate fare information for Dhaka bus routes" data-bn="ঢাকার বাস রুটের জন্য সঠিক ভাড়ার তথ্য পান">
+                        Get accurate fare information for Dhaka bus routes
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section class="search-section mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+                            <form id="fareSearchForm">
+                                <div class="row g-3">
+                                    <!-- From Input -->
+                                    <div class="col-md-6">
+                                        <label for="fromInput" class="form-label fw-bold">
+                                            <i class="fas fa-map-marker-alt text-success me-1"></i>
+                                            <span data-en="From" data-bn="থেকে">From</span>
+                                        </label>
+                                        <div class="position-relative">
+                                            <input type="text" 
+                                                   class="form-control form-control-lg" 
+                                                   id="fromInput" 
+                                                   placeholder="Enter starting point..."
+                                                   data-en-placeholder="Enter starting point..."
+                                                   data-bn-placeholder="শুরুর স্থান লিখুন..."
+                                                   autocomplete="off" 
+                                                   required>
+                                            <div id="fromSuggestions" class="suggestions-dropdown"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- To Input -->
+                                    <div class="col-md-6">
+                                        <label for="toInput" class="form-label fw-bold">
+                                            <i class="fas fa-map-marker-alt text-danger me-1"></i>
+                                            <span data-en="To" data-bn="যেখানে">To</span>
+                                        </label>
+                                        <div class="position-relative">
+                                            <input type="text" 
+                                                   class="form-control form-control-lg" 
+                                                   id="toInput" 
+                                                   placeholder="Enter destination..."
+                                                   data-en-placeholder="Enter destination..."
+                                                   data-bn-placeholder="গন্তব্য লিখুন..."
+                                                   autocomplete="off" 
+                                                   required>
+                                            <div id="toSuggestions" class="suggestions-dropdown"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="row g-2 mt-3">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary btn-lg w-100" id="searchBtn">
+                                            <i class="fas fa-search me-2"></i>
+                                            <span data-en="Search Fare" data-bn="ভাড়া খুঁজুন">Search Fare</span>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-outline-secondary btn-lg w-100" id="swapBtn" title="Swap From and To">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-outline-info btn-lg w-100" id="nearestStopBtn" title="Find Nearest Stop">
+                                            <i class="fas fa-location-arrow"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section mb-5" style="display: none;">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-route me-2"></i>
+                                <span data-en="Route Information" data-bn="রুট তথ্য">Route Information</span>
+                            </h5>
+                        </div>
+                        <div class="card-body" id="resultsContent">
+                            <!-- Results will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions-section mb-5">
+            <div class="row">
+                <!-- Recent Searches -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">
+                                <i class="fas fa-history me-2 text-primary"></i>
+                                <span data-en="Recent Searches" data-bn="সাম্প্রতিক অনুসন্ধান">Recent Searches</span>
+                            </h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <div id="recentSearches" class="d-flex flex-wrap gap-1">
+                                <span class="text-muted small" data-en="No recent searches" data-bn="কোনো সাম্প্রতিক অনুসন্ধান নেই">No recent searches</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Favorite Routes -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">
+                                <i class="fas fa-heart me-2 text-danger"></i>
+                                <span data-en="Favorite Routes" data-bn="প্রিয় রুট">Favorite Routes</span>
+                            </h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <div id="favoriteRoutes" class="d-flex flex-wrap gap-1">
+                                <span class="text-muted small" data-en="No favorite routes" data-bn="কোনো প্রিয় রুট নেই">No favorite routes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 data-en="Dhaka Bus Fare Finder" data-bn="ঢাকা বাস ভাড়া খোঁজক">Dhaka Bus Fare Finder</h6>
+                    <p class="small mb-0" data-en="Find accurate bus fares for Dhaka routes" data-bn="ঢাকার রুটের জন্য সঠিক বাস ভাড়া খুঁজুন">
+                        Find accurate bus fares for Dhaka routes
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>&copy; 2024 Dhaka Bus Fare. <span data-en="All rights reserved" data-bn="সর্বস্বত্ব সংরক্ষিত">All rights reserved</span>.</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/app.js"></script>
+</body>
+</html>

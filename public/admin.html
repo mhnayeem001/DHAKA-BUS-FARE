@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Dhaka Bus Fare</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-bus me-2"></i>
+                Dhaka Bus Fare - Admin Panel
+            </a>
+            
+            <div class="d-flex align-items-center">
+                <a href="/" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-home me-1"></i>
+                    Back to Main
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mt-5 pt-3">
+        <!-- Login Section -->
+        <section id="loginSection" class="login-section">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card shadow">
+                        <div class="card-header bg-primary text-white text-center">
+                            <h4 class="mb-0">
+                                <i class="fas fa-lock me-2"></i>
+                                Admin Login
+                            </h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100" id="loginBtn">
+                                    <i class="fas fa-sign-in-alt me-2"></i>
+                                    Login
+                                </button>
+                            </form>
+                            
+                            <!-- Login Error Alert -->
+                            <div id="loginError" class="alert alert-danger mt-3" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel Section -->
+        <section id="adminPanel" class="admin-panel" style="display: none;">
+            <div class="row">
+                <!-- Upload Section -->
+                <div class="col-lg-8">
+                    <div class="card shadow mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-file-upload me-2"></i>
+                                Upload Excel File
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>File Format:</strong> Your Excel file should contain columns: 
+                                <code>From</code>, <code>To</code>, <code>Distance</code>, <code>Fare</code>
+                            </div>
+                            
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="excelFile" class="form-label">Select Excel File</label>
+                                    <input type="file" 
+                                           class="form-control" 
+                                           id="excelFile" 
+                                           accept=".xlsx,.xls" 
+                                           required>
+                                    <div class="form-text">
+                                        Supported formats: .xlsx, .xls (Max size: 5MB)
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-success btn-lg" id="uploadBtn">
+                                    <i class="fas fa-upload me-2"></i>
+                                    Upload and Convert to JSON
+                                </button>
+                            </form>
+                            
+                            <!-- Upload Progress -->
+                            <div id="uploadProgress" class="mt-3" style="display: none;">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         role="progressbar" style="width: 100%"></div>
+                                </div>
+                                <small class="text-muted">Processing file...</small>
+                            </div>
+                            
+                            <!-- Upload Result -->
+                            <div id="uploadResult" class="mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Current Data Info -->
+                <div class="col-lg-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-database me-2"></i>
+                                Current Data Status
+                            </h6>
+                        </div>
+                        <div class="card-body" id="currentDataInfo">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2 mb-0">Loading data info...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="card shadow">
+                        <div class="card-header bg-secondary text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-tools me-2"></i>
+                                Quick Actions
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-outline-primary w-100 mb-2" onclick="location.reload()">
+                                <i class="fas fa-sync-alt me-2"></i>
+                                Refresh Data
+                            </button>
+                            <button class="btn btn-outline-info w-100 mb-2" id="downloadDataBtn">
+                                <i class="fas fa-download me-2"></i>
+                                Download Current JSON
+                            </button>
+                            <button class="btn btn-outline-danger w-100" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Data Preview Section -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card shadow">
+                        <div class="card-header bg-warning text-dark">
+                            <h6 class="mb-0">
+                                <i class="fas fa-eye me-2"></i>
+                                Data Preview (Latest 10 Routes)
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover" id="dataPreviewTable">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Distance (km)</th>
+                                            <th>Fare (Tk)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dataPreviewBody">
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted">No data available</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-5">
+        <div class="container text-center">
+            <small>&copy; 2024 Dhaka Bus Fare - Admin Panel. All rights reserved.</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Admin JS -->
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "routes": [
+    {
+      "from": "Farmgate",
+      "to": "New Market",
+      "distance": 3.5,
+      "fare": 15
+    },
+    {
+      "from": "New Market",
+      "to": "Farmgate",
+      "distance": 3.5,
+      "fare": 15
+    },
+    {
+      "from": "Gulshan",
+      "to": "Dhanmondi",
+      "distance": 8.2,
+      "fare": 25
+    },
+    {
+      "from": "Dhanmondi",
+      "to": "Gulshan",
+      "distance": 8.2,
+      "fare": 25
+    },
+    {
+      "from": "Uttara",
+      "to": "Motijheel",
+      "distance": 18.5,
+      "fare": 45
+    },
+    {
+      "from": "Motijheel",
+      "to": "Uttara",
+      "distance": 18.5,
+      "fare": 45
+    },
+    {
+      "from": "Mirpur",
+      "to": "Sadarghat",
+      "distance": 12.3,
+      "fare": 30
+    },
+    {
+      "from": "Sadarghat",
+      "to": "Mirpur",
+      "distance": 12.3,
+      "fare": 30
+    }
+  ],
+  "stops": [
+    "Farmgate",
+    "New Market",
+    "Gulshan",
+    "Dhanmondi",
+    "Uttara",
+    "Motijheel",
+    "Mirpur",
+    "Sadarghat"
+  ],
+  "lastUpdated": "2024-01-01T12:00:00.000Z",
+  "totalRoutes": 8,
+  "totalStops": 8
+}
