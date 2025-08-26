@@ -74,13 +74,20 @@
                                         </label>
                                         <div class="position-relative">
                                             <input type="text" 
-                                                   class="form-control form-control-lg" 
+                                                   class="form-control form-control-lg pe-5" 
                                                    id="fromInput" 
                                                    placeholder="Enter starting point..."
                                                    data-en-placeholder="Enter starting point..."
                                                    data-bn-placeholder="শুরুর স্থান লিখুন..."
                                                    autocomplete="off" 
                                                    required>
+                                            <button type="button" 
+                                                    class="btn btn-link position-absolute top-50 end-0 translate-middle-y me-2 p-0" 
+                                                    id="currentLocationBtn" 
+                                                    title="Use current location"
+                                                    style="z-index: 10; border: none; background: none;">
+                                                <i class="fas fa-crosshairs text-primary fs-5"></i>
+                                            </button>
                                             <div id="fromSuggestions" class="suggestions-dropdown"></div>
                                         </div>
                                     </div>
@@ -107,19 +114,19 @@
                                 
                                 <!-- Action Buttons -->
                                 <div class="row g-2 mt-3">
-                                    <div class="col-md-6">
-                                        <button type="submit" class="btn btn-primary btn-lg w-100" id="searchBtn">
+                                    <div class="col-12 col-md-8">
+                                        <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm" id="searchBtn">
                                             <i class="fas fa-search me-2"></i>
                                             <span data-en="Search Fare" data-bn="ভাড়া খুঁজুন">Search Fare</span>
                                         </button>
                                     </div>
-                                    <div class="col-md-3">
-                                        <button type="button" class="btn btn-outline-secondary btn-lg w-100" id="swapBtn" title="Swap From and To">
+                                    <div class="col-6 col-md-2">
+                                        <button type="button" class="btn btn-outline-secondary btn-lg w-100 shadow-sm" id="swapBtn" title="Swap From and To">
                                             <i class="fas fa-exchange-alt"></i>
                                         </button>
                                     </div>
-                                    <div class="col-md-3">
-                                        <button type="button" class="btn btn-outline-info btn-lg w-100" id="nearestStopBtn" title="Find Nearest Stop">
+                                    <div class="col-6 col-md-2">
+                                        <button type="button" class="btn btn-outline-info btn-lg w-100 shadow-sm" id="nearestStopBtn" title="Find Nearest Stop">
                                             <i class="fas fa-location-arrow"></i>
                                         </button>
                                     </div>

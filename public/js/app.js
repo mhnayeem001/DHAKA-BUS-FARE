@@ -15,6 +15,7 @@ const loadingSpinner = document.getElementById('loadingSpinner');
 const searchBtn = document.getElementById('searchBtn');
 const swapBtn = document.getElementById('swapBtn');
 const nearestStopBtn = document.getElementById('nearestStopBtn');
+const currentLocationBtn = document.getElementById('currentLocationBtn');
 const languageToggle = document.getElementById('languageToggle');
 const themeToggle = document.getElementById('themeToggle');
 const currentLangSpan = document.getElementById('currentLang');
@@ -110,6 +111,9 @@ function setupEventListeners() {
     
     // Nearest stop button
     nearestStopBtn.addEventListener('click', findNearestStop);
+    
+    // Current location button
+    currentLocationBtn.addEventListener('click', useCurrentLocation);
     
     // Language toggle
     languageToggle.addEventListener('click', toggleLanguage);
@@ -249,35 +253,47 @@ async function handleSearchSubmit(e) {
 
 function displaySearchResult(route, from, to) {
     const resultHTML = `
-        <div class="row">
-            <div class="col-md-8">
-                <div class="fare-info">
-                    <div>
-                        <h6 class="mb-1">
-                            <i class="fas fa-map-marker-alt text-success me-1"></i>${from}
-                            <i class="fas fa-arrow-right mx-2"></i>
-                            <i class="fas fa-map-marker-alt text-danger me-1"></i>${to}
-                        </h6>
-                        <p class="distance-info mb-0">
-                            <i class="fas fa-route me-1"></i>
-                            Distance: ${route.distance} km
-                        </p>
-                    </div>
-                    <div class="text-end">
-                        <div class="fare-amount">৳${route.fare}</div>
-                        <small class="text-muted">Fare Amount</small>
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="fare-info fade-in">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-md-8">
+                            <div class="route-details">
+                                <h5 class="mb-2 fw-bold">
+                                    <i class="fas fa-map-marker-alt text-success me-2"></i>${from}
+                                    <i class="fas fa-arrow-right mx-3 text-primary"></i>
+                                    <i class="fas fa-map-marker-alt text-danger me-2"></i>${to}
+                                </h5>
+                                <div class="route-meta d-flex flex-wrap gap-3">
+                                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill">
+                                        <i class="fas fa-route me-1"></i>
+                                        ${route.distance} km
+                                    </span>
+                                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+                                        <i class="fas fa-clock me-1"></i>
+                                        ~${Math.ceil(route.distance * 2)} min
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4 text-center text-md-end">
+                            <div class="fare-amount-container">
+                                <div class="fare-amount pulse">৳${route.fare}</div>
+                                <small class="text-muted fw-500">Total Fare</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-outline-danger btn-sm" onclick="addToFavorites('${from}', '${to}')">
-                        <i class="fas fa-heart me-1"></i>
-                        Add to Favorites
+            <div class="col-12">
+                <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+                    <button class="btn btn-outline-danger" onclick="addToFavorites('${from}', '${to}')">
+                        <i class="fas fa-heart me-2"></i>
+                        <span data-en="Add to Favorites" data-bn="প্রিয়তে যোগ করুন">Add to Favorites</span>
                     </button>
-                    <button class="btn btn-outline-primary btn-sm" onclick="shareRoute('${from}', '${to}', ${route.fare})">
-                        <i class="fas fa-share me-1"></i>
-                        Share Route
+                    <button class="btn btn-outline-primary" onclick="shareRoute('${from}', '${to}', ${route.fare})">
+                        <i class="fas fa-share me-2"></i>
+                        <span data-en="Share Route" data-bn="রুট শেয়ার করুন">Share Route</span>
                     </button>
                 </div>
             </div>
@@ -286,7 +302,15 @@ function displaySearchResult(route, from, to) {
     
     resultsContent.innerHTML = resultHTML;
     resultsSection.style.display = 'block';
-    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateLanguageElements();
+    
+    // Smooth scroll with offset for mobile
+    setTimeout(() => {
+        resultsSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    }, 100);
 }
 
 function swapInputs() {
@@ -327,8 +351,126 @@ function findNearestStop() {
             hideLoading();
             console.error('Geolocation error:', error);
             showNotification('Failed to get your location. Please allow location access.', 'error');
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 300000
         }
     );
+}
+
+function useCurrentLocation() {
+    if (!navigator.geolocation) {
+        showNotification('Geolocation is not supported by this browser.', 'error');
+        return;
+    }
+    
+    // Show loading animation on button
+    const icon = currentLocationBtn.querySelector('i');
+    const originalClass = icon.className;
+    icon.className = 'fas fa-spinner loading-location';
+    currentLocationBtn.disabled = true;
+    currentLocationBtn.title = 'Getting location...';
+    
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const { latitude, longitude } = position.coords;
+            
+            // Calculate nearest stop based on coordinates
+            const nearestStop = findNearestStopByCoords(latitude, longitude);
+            
+            if (nearestStop) {
+                fromInput.value = nearestStop.name;
+                showNotification(`📍 Using current location: ${nearestStop.name} (${nearestStop.distance}m away)`, 'success');
+                
+                // Trigger autocomplete to show it's been filled
+                fromInput.focus();
+                fromInput.blur();
+            } else {
+                showNotification('No nearby stops found within reasonable distance.', 'error');
+            }
+            
+            // Restore button
+            icon.className = originalClass;
+            currentLocationBtn.disabled = false;
+            currentLocationBtn.title = 'Use current location';
+        },
+        (error) => {
+            console.error('Geolocation error:', error);
+            
+            let errorMessage = 'Failed to get your location.';
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = 'Location access denied. Please allow location access and try again.';
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = 'Location information unavailable. Please try again.';
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = 'Location request timed out. Please try again.';
+                    break;
+            }
+            
+            showNotification(errorMessage, 'error');
+            
+            // Restore button
+            icon.className = originalClass;
+            currentLocationBtn.disabled = false;
+            currentLocationBtn.title = 'Use current location';
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 300000
+        }
+    );
+}
+
+function findNearestStopByCoords(userLat, userLng) {
+    // Sample coordinates for Dhaka bus stops (in a real app, this would come from your database)
+    const stopCoordinates = {
+        'Farmgate': { lat: 23.7515, lng: 90.3860 },
+        'New Market': { lat: 23.7348, lng: 90.3860 },
+        'Gulshan': { lat: 23.7806, lng: 90.4142 },
+        'Dhanmondi': { lat: 23.7461, lng: 90.3742 },
+        'Uttara': { lat: 23.8759, lng: 90.3795 },
+        'Motijheel': { lat: 23.7233, lng: 90.4174 },
+        'Mirpur': { lat: 23.8103, lng: 90.3654 },
+        'Sadarghat': { lat: 23.7055, lng: 90.4077 }
+    };
+    
+    let nearestStop = null;
+    let minDistance = Infinity;
+    
+    Object.entries(stopCoordinates).forEach(([stopName, coords]) => {
+        const distance = calculateDistance(userLat, userLng, coords.lat, coords.lng);
+        if (distance < minDistance) {
+            minDistance = distance;
+            nearestStop = {
+                name: stopName,
+                distance: Math.round(distance)
+            };
+        }
+    });
+    
+    // Only return if within 5km radius
+    return minDistance <= 5000 ? nearestStop : null;
+}
+
+function calculateDistance(lat1, lng1, lat2, lng2) {
+    const R = 6371e3; // Earth's radius in meters
+    const φ1 = lat1 * Math.PI/180;
+    const φ2 = lat2 * Math.PI/180;
+    const Δφ = (lat2-lat1) * Math.PI/180;
+    const Δλ = (lng2-lng1) * Math.PI/180;
+
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    return R * c; // Distance in meters
 }
 
 function addToRecentSearches(from, to) {
