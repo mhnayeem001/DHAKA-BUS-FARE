@@ -1,0 +1,64 @@
+I want to build a **complete One-Page Fare Web App** for Dhaka bus routes with an **Admin Panel** that allows me to upload Excel files and automatically generate JSON data. I want to develop this project from scratch using **Node.js (Express)** for backend and **HTML/CSS/JS** for frontend. I will use **Replit** for development.
+
+The project should have the following features:
+
+1. **Excel Dataset Upload and JSON Conversion**
+   - I have a dataset in Excel format with columns: `From`, `To`, `Distance`, `Fare`.
+   - Admin Panel should allow me (only admin) to upload the Excel file.
+   - On upload, the server should convert the Excel data into a JSON file (`fare.json`) and save it in a `data/` folder.
+   - The JSON file should reflect the latest data whenever I upload a new Excel.
+
+2. **Admin Authentication**
+   - Only I should access the Admin Panel.
+   - Use simple username/password authentication or secret key.
+   - Admin page allows file upload and shows success message after JSON generation.
+
+3. **Frontend User Features**
+   - From / To input fields with **autocomplete**.
+     - Partial typing should filter results (e.g., `F` → `Farmgate`, `Fi` → `Firmgate`).
+     - Optionally use **current location** to select nearest bus stop if the location does not exactly match a stop.
+   - **Search Fare Button**:
+     - Displays the distance and fare between selected From and To stops.
+   - **Quick Actions**:
+     - Recent searches (store in localStorage)
+     - Favorite routes (store in localStorage)
+   - **Nearest Bus Stop Button**:
+     - Shows the nearest bus stop to current location.
+   - **UI/UX**:
+     - Mobile-friendly responsive design.
+     - Language toggle (Bangla / English).
+     - Night / Day mode switch.
+     - Modern, clean, user-friendly layout.
+   - One-page design with header and footer.
+
+4. **Backend Features**
+   - Serve static frontend files from `/public`.
+   - Serve JSON data from `/data/fare.json`.
+   - Handle Excel upload and JSON conversion via POST `/upload`.
+   - Protect upload route with admin authentication.
+   - Optional: backup old JSON files before overwrite.
+
+5. **Frontend / Backend Interaction**
+   - Frontend should fetch `/data/fare.json` to display fares and autocomplete options.
+   - Backend should correctly convert Excel to JSON and replace the old data.
+   - All features should work seamlessly when JSON is updated.
+
+6. **Technology Stack**
+   - Node.js + Express for backend
+   - Multer for Excel file upload
+   - XLSX npm package for Excel to JSON conversion
+   - HTML, CSS (Bootstrap or Tailwind), JavaScript for frontend
+   - LocalStorage for quick actions
+   - Geolocation API for nearest stop
+
+7. **Deliverables**
+   - Complete Node.js backend (`server.js`)
+   - Public folder with HTML, CSS, JS
+   - Admin Panel page (`admin.html`)
+   - Functional Excel upload → JSON generation
+   - Fully working fare search system
+   - Mobile-friendly and modern UI/UX
+
+**Instructions**: Provide the **complete code structure** for the project, including backend (`server.js`), frontend files (`index.html`, `admin.html`, `style.css`, `app.js`), folder structure, and instructions to run the project on Replit from scratch. Ensure **Excel upload correctly generates JSON** and all frontend features work properly with updated data.
+
+Make sure the project is ready-to-run on Replit without errors.
