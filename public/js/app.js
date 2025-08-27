@@ -40,7 +40,11 @@ const translations = {
         'Dhaka Bus Fare': 'Dhaka Bus Fare',
         'Find accurate bus fares for Dhaka routes': 'Find accurate bus fares for Dhaka routes',
         'All rights reserved': 'All rights reserved',
-        'Dhaka Bus Fare Finder': 'Dhaka Bus Fare Finder'
+        'Dhaka Bus Fare Finder': 'Dhaka Bus Fare Finder',
+        'Created By': 'Created By',
+        'Connect with me': 'Connect with me',
+        'Data Source': 'Data Source',
+        'BRTC Official Portal': 'BRTC Official Portal'
     },
     bn: {
         'Find Your Bus Fare': 'আপনার বাস ভাড়া খুঁজুন',
@@ -59,7 +63,11 @@ const translations = {
         'Dhaka Bus Fare': 'ঢাকা বাস ভাড়া',
         'Find accurate bus fares for Dhaka routes': 'ঢাকার রুটের জন্য সঠিক বাস ভাড়া খুঁজুন',
         'All rights reserved': 'সর্বস্বত্ব সংরক্ষিত',
-        'Dhaka Bus Fare Finder': 'ঢাকা বাস ভাড়া খোঁজক'
+        'Dhaka Bus Fare Finder': 'ঢাকা বাস ভাড়া খোঁজক',
+        'Created By': 'তৈরি করেছেন',
+        'Connect with me': 'আমার সাথে যুক্ত হোন',
+        'Data Source': 'তথ্যের উৎস',
+        'BRTC Official Portal': 'বিআরটিসি অফিসিয়াল পোর্টাল'
     }
 };
 
@@ -82,6 +90,12 @@ function initializeApp() {
     // Load quick actions
     loadRecentSearches();
     loadFavoriteRoutes();
+    
+    // Add footer content
+    addFooterContent();
+    
+    // Add professional styles
+    addProfessionalStyles();
 }
 
 function setupEventListeners() {
@@ -124,6 +138,289 @@ function setupEventListeners() {
     // Keyboard navigation for suggestions
     fromInput.addEventListener('keydown', (e) => handleKeyNavigation(e, fromSuggestions));
     toInput.addEventListener('keydown', (e) => handleKeyNavigation(e, toSuggestions));
+}
+
+function addProfessionalStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        /* Professional Color Scheme */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        .fare-boxes {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .general-fare-box {
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .student-fare-box {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .fare-amount {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--secondary-dark);
+            margin-bottom: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .student-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .fare-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .creator-info {
+            background: var(--light);
+            padding: 2rem 1.5rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .social-links .btn {
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 2px solid;
+        }
+        
+        .social-links .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .social-links .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .social-links .btn-outline-dark {
+            border-color: var(--dark);
+            color: var(--dark);
+        }
+        
+        .social-links .btn-outline-dark:hover {
+            background-color: var(--dark);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        /* Data source styling */
+        .data-source {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            border: 1px solid var(--border);
+        }
+        
+        .data-source-text {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin: 0;
+        }
+        
+        .data-source-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .data-source-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        /* Route details styling */
+        .route-details h5 {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .badge {
+            background: var(--light);
+            border: 1px solid var(--border);
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .fare-boxes {
+                flex-direction: row;
+                gap: 0.75rem;
+            }
+            
+            .general-fare-box,
+            .student-fare-box {
+                flex: 1;
+                padding: 1rem;
+                min-width: 120px;
+            }
+            
+            .fare-amount {
+                font-size: 1.75rem;
+            }
+            
+            .student-amount {
+                font-size: 1.5rem;
+            }
+            
+            .fare-label {
+                font-size: 0.75rem;
+            }
+            
+            .creator-info {
+                padding: 1.5rem 1rem;
+                margin: 2rem -1rem -1rem;
+                border-radius: 0;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .social-links .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .data-source {
+                padding: 0.5rem 0.75rem;
+                margin-top: 0.75rem;
+            }
+            
+            .data-source-text {
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .fare-boxes {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .fare-amount {
+                font-size: 1.5rem;
+            }
+            
+            .student-amount {
+                font-size: 1.25rem;
+            }
+            
+            .fare-label {
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Animation and hover effects */
+        .general-fare-box:hover,
+        .student-fare-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
+        }
+        
+        /* Button styles */
+        .btn-outline-danger {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        
+        .btn-outline-danger:hover {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function addFooterContent() {
+    const footer = document.querySelector('footer');
+    if (footer) {
+        footer.innerHTML += `
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="creator-info text-center">
+                            <p class="mb-3 text-dark fw-semibold">
+                                <span data-en="Created By" data-bn="তৈরি করেছেন">Created By</span>: 
+                                <span class="text-primary">MAHADI HASAN NAYEEM</span>
+                            </p>
+                            <div class="social-links d-flex flex-wrap justify-content-center gap-2 mb-3">
+                                <a href="https://www.linkedin.com/in/mahadihasannayeem" target="_blank" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                                    <i class="fab fa-linkedin me-2"></i> LinkedIn
+                                </a>
+                                <a href="mailto:mhnayem01@gmail.com" class="btn btn-outline-dark btn-sm d-flex align-items-center">
+                                    <i class="fas fa-envelope me-2"></i> Gmail
+                                </a>
+                            </div>
+                            <div class="data-source">
+                                <p class="data-source-text mb-0">
+                                    <span data-en="Data Source" data-bn="তথ্যের উৎস">Data Source</span>: 
+                                    <a href="https://www.brtc.gov.bd" target="_blank" class="data-source-link" data-en="BRTC Official Portal" data-bn="বিআরটিসি অফিসিয়াল পোর্টাল">BRTC Official Portal</a>
+                                </p>
+                            </div>
+                            <p class="text-muted small mb-0 mt-2">
+                                <span data-en="All rights reserved" data-bn="সর্বস্বত্ব সংরক্ষিত">All rights reserved</span> © ${new Date().getFullYear()} 
+                                <span class="fw-semibold" data-en="Dhaka Bus Fare Finder" data-bn="ঢাকা বাস ভাড়া খোঁজক">Dhaka Bus Fare Finder</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        updateLanguageElements();
+    }
 }
 
 async function loadFareData() {
@@ -252,6 +549,10 @@ async function handleSearchSubmit(e) {
 }
 
 function displaySearchResult(route, from, to) {
+    // Calculate student fare (half of general fare, rounded down)
+    const generalFare = parseInt(route.fare);
+    const studentFare = Math.floor(generalFare / 2);
+    
     const resultHTML = `
         <div class="row g-4">
             <div class="col-12">
@@ -265,21 +566,27 @@ function displaySearchResult(route, from, to) {
                                     <i class="fas fa-map-marker-alt text-danger me-2"></i>${to}
                                 </h5>
                                 <div class="route-meta d-flex flex-wrap gap-3">
-                                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill">
-                                        <i class="fas fa-route me-1"></i>
+                                    <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
+                                        <i class="fas fa-route text-primary me-1"></i>
                                         ${route.distance} km
                                     </span>
-                                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
-                                        <i class="fas fa-clock me-1"></i>
+                                    <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">
+                                        <i class="fas fa-clock text-success me-1"></i>
                                         ~${Math.ceil(route.distance * 2)} min
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-4 text-center text-md-end">
-                            <div class="fare-amount-container">
-                                <div class="fare-amount pulse">৳${route.fare}</div>
-                                <small class="text-muted fw-500">Total Fare</small>
+                        <div class="col-12 col-md-4">
+                            <div class="fare-boxes">
+                                <div class="general-fare-box">
+                                    <div class="fare-amount">৳${generalFare}</div>
+                                    <small class="fare-label">General Fare</small>
+                                </div>
+                                <div class="student-fare-box">
+                                    <div class="student-amount">৳${studentFare}</div>
+                                    <small class="fare-label">Student Fare (50% off)</small>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -287,11 +594,11 @@ function displaySearchResult(route, from, to) {
             </div>
             <div class="col-12">
                 <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
-                    <button class="btn btn-outline-danger" onclick="addToFavorites('${from}', '${to}')">
+                    <button class="btn btn-outline-danger btn-sm" onclick="addToFavorites('${from}', '${to}')">
                         <i class="fas fa-heart me-2"></i>
                         <span data-en="Add to Favorites" data-bn="প্রিয়তে যোগ করুন">Add to Favorites</span>
                     </button>
-                    <button class="btn btn-outline-primary" onclick="shareRoute('${from}', '${to}', ${route.fare})">
+                    <button class="btn btn-outline-primary btn-sm" onclick="shareRoute('${from}', '${to}', ${generalFare}, ${studentFare})">
                         <i class="fas fa-share me-2"></i>
                         <span data-en="Share Route" data-bn="রুট শেয়ার করুন">Share Route</span>
                     </button>
@@ -335,8 +642,6 @@ function findNearestStop() {
     navigator.geolocation.getCurrentPosition(
         (position) => {
             hideLoading();
-            // In a real implementation, you would calculate distances to stops
-            // For now, we'll show a sample nearest stop
             const sampleStops = fareData.stops.slice(0, 5);
             const nearestStop = sampleStops[Math.floor(Math.random() * sampleStops.length)];
             
@@ -366,78 +671,71 @@ function useCurrentLocation() {
         return;
     }
     
-    // Show loading animation on button
     const icon = currentLocationBtn.querySelector('i');
     const originalClass = icon.className;
-    icon.className = 'fas fa-spinner loading-location';
+    icon.className = 'fas fa-spinner fa-spin';
     currentLocationBtn.disabled = true;
-    currentLocationBtn.title = 'Getting location...';
     
     navigator.geolocation.getCurrentPosition(
         (position) => {
             const { latitude, longitude } = position.coords;
-            
-            // Calculate nearest stop based on coordinates
             const nearestStop = findNearestStopByCoords(latitude, longitude);
             
             if (nearestStop) {
                 fromInput.value = nearestStop.name;
-                showNotification(`📍 Using current location: ${nearestStop.name} (${nearestStop.distance}m away)`, 'success');
-                
-                // Trigger autocomplete to show it's been filled
-                fromInput.focus();
-                fromInput.blur();
+                showNotification(`📍 Nearest stop: ${nearestStop.name}`, 'success');
+                setTimeout(() => toInput.focus(), 500);
             } else {
-                showNotification('No nearby stops found within reasonable distance.', 'error');
+                showNotification('No nearby bus stops found. Please enter your location manually.', 'info');
             }
             
-            // Restore button
             icon.className = originalClass;
             currentLocationBtn.disabled = false;
-            currentLocationBtn.title = 'Use current location';
         },
         (error) => {
             console.error('Geolocation error:', error);
-            
             let errorMessage = 'Failed to get your location.';
             switch (error.code) {
                 case error.PERMISSION_DENIED:
-                    errorMessage = 'Location access denied. Please allow location access and try again.';
+                    errorMessage = 'Location access denied. Please allow location access.';
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    errorMessage = 'Location information unavailable. Please try again.';
+                    errorMessage = 'Location information unavailable.';
                     break;
                 case error.TIMEOUT:
-                    errorMessage = 'Location request timed out. Please try again.';
+                    errorMessage = 'Location request timed out.';
                     break;
             }
             
             showNotification(errorMessage, 'error');
-            
-            // Restore button
             icon.className = originalClass;
             currentLocationBtn.disabled = false;
-            currentLocationBtn.title = 'Use current location';
         },
         {
             enableHighAccuracy: true,
             timeout: 15000,
-            maximumAge: 300000
+            maximumAge: 60000
         }
     );
 }
 
 function findNearestStopByCoords(userLat, userLng) {
-    // Sample coordinates for Dhaka bus stops (in a real app, this would come from your database)
     const stopCoordinates = {
         'Farmgate': { lat: 23.7515, lng: 90.3860 },
         'New Market': { lat: 23.7348, lng: 90.3860 },
-        'Gulshan': { lat: 23.7806, lng: 90.4142 },
+        'Gulshan 1': { lat: 23.7806, lng: 90.4142 },
+        'Gulshan 2': { lat: 23.7941, lng: 90.4153 },
         'Dhanmondi': { lat: 23.7461, lng: 90.3742 },
         'Uttara': { lat: 23.8759, lng: 90.3795 },
         'Motijheel': { lat: 23.7233, lng: 90.4174 },
         'Mirpur': { lat: 23.8103, lng: 90.3654 },
-        'Sadarghat': { lat: 23.7055, lng: 90.4077 }
+        'Sadarghat': { lat: 23.7055, lng: 90.4077 },
+        'Kuril Bishwa Road': { lat: 23.8150, lng: 90.4250 },
+        'Badda': { lat: 23.7850, lng: 90.4250 },
+        'Banani': { lat: 23.7940, lng: 90.4050 },
+        'Mohakhali': { lat: 23.7790, lng: 90.4050 },
+        'Tejgaon': { lat: 23.7590, lng: 90.4050 },
+        'Shahbagh': { lat: 23.7360, lng: 90.3950 }
     };
     
     let nearestStop = null;
@@ -447,19 +745,15 @@ function findNearestStopByCoords(userLat, userLng) {
         const distance = calculateDistance(userLat, userLng, coords.lat, coords.lng);
         if (distance < minDistance) {
             minDistance = distance;
-            nearestStop = {
-                name: stopName,
-                distance: Math.round(distance)
-            };
+            nearestStop = { name: stopName, distance: Math.round(distance) };
         }
     });
     
-    // Only return if within 5km radius
-    return minDistance <= 5000 ? nearestStop : null;
+    return minDistance <= 3000 ? nearestStop : null;
 }
 
 function calculateDistance(lat1, lng1, lat2, lng2) {
-    const R = 6371e3; // Earth's radius in meters
+    const R = 6371e3;
     const φ1 = lat1 * Math.PI/180;
     const φ2 = lat2 * Math.PI/180;
     const Δφ = (lat2-lat1) * Math.PI/180;
@@ -470,23 +764,18 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
               Math.sin(Δλ/2) * Math.sin(Δλ/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-    return R * c; // Distance in meters
+    return R * c;
 }
 
 function addToRecentSearches(from, to) {
     let recentSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
-    
     const searchItem = { from, to, timestamp: Date.now() };
     
-    // Remove if already exists
     recentSearches = recentSearches.filter(item => 
         !(item.from === from && item.to === to)
     );
     
-    // Add to beginning
     recentSearches.unshift(searchItem);
-    
-    // Keep only last 10 searches
     recentSearches = recentSearches.slice(0, 10);
     
     localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
@@ -514,7 +803,6 @@ function loadRecentSearches() {
 function addToFavorites(from, to) {
     let favorites = JSON.parse(localStorage.getItem('favoriteRoutes') || '[]');
     
-    // Check if already exists
     const exists = favorites.some(fav => fav.from === from && fav.to === to);
     if (exists) {
         showNotification('Route is already in favorites!', 'info');
@@ -523,8 +811,6 @@ function addToFavorites(from, to) {
     
     const favoriteItem = { from, to, timestamp: Date.now() };
     favorites.unshift(favoriteItem);
-    
-    // Keep only last 15 favorites
     favorites = favorites.slice(0, 15);
     
     localStorage.setItem('favoriteRoutes', JSON.stringify(favorites));
@@ -553,22 +839,19 @@ function loadFavoriteRoutes() {
 function quickSearch(from, to) {
     fromInput.value = from;
     toInput.value = to;
-    
-    // Trigger search
     const event = new Event('submit');
     fareSearchForm.dispatchEvent(event);
 }
 
-function shareRoute(from, to, fare) {
+function shareRoute(from, to, generalFare, studentFare) {
     if (navigator.share) {
         navigator.share({
             title: 'Dhaka Bus Fare',
-            text: `Bus fare from ${from} to ${to}: ৳${fare}`,
+            text: `Bus fare from ${from} to ${to}:\nGeneral: ৳${generalFare}\nStudent: ৳${studentFare}`,
             url: window.location.href
         }).catch(err => console.log('Error sharing:', err));
     } else {
-        // Fallback: copy to clipboard
-        const shareText = `Bus fare from ${from} to ${to}: ৳${fare}`;
+        const shareText = `Bus fare from ${from} to ${to}:\nGeneral: ৳${generalFare}\nStudent: ৳${studentFare}`;
         navigator.clipboard.writeText(shareText).then(() => {
             showNotification('Route details copied to clipboard!', 'success');
         }).catch(() => {
@@ -648,7 +931,6 @@ function hideLoading() {
 }
 
 function showNotification(message, type = 'info') {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
     notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; max-width: 300px;';
@@ -660,7 +942,6 @@ function showNotification(message, type = 'info') {
     
     document.body.appendChild(notification);
     
-    // Auto-remove after 5 seconds
     setTimeout(() => {
         if (notification.parentNode) {
             notification.remove();

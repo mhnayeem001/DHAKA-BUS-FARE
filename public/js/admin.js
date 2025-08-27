@@ -2,6 +2,8 @@
 
 // Global variables
 let isLoggedIn = false;
+let currentUsername = '';
+let currentPassword = '';
 
 // DOM Elements
 const loginSection = document.getElementById('loginSection');
@@ -24,7 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeAdminPanel() {
     // Check if already logged in (session storage)
     const savedLogin = sessionStorage.getItem('adminLoggedIn');
-    if (savedLogin === 'true') {
+    const savedUsername = sessionStorage.getItem('adminUsername');
+    const savedPassword = sessionStorage.getItem('adminPassword');
+    
+    if (savedLogin === 'true' && savedUsername && savedPassword) {
+        currentUsername = savedUsername;
+        currentPassword = savedPassword;
         showAdminPanel();
     }
     
@@ -75,7 +82,12 @@ async function handleLogin(e) {
         const result = await response.json();
         
         if (result.success) {
+            // Store credentials for file upload
+            currentUsername = username;
+            currentPassword = password;
             sessionStorage.setItem('adminLoggedIn', 'true');
+            sessionStorage.setItem('adminUsername', username);
+            sessionStorage.setItem('adminPassword', password);
             showAdminPanel();
             hideLoginError();
         } else {
@@ -99,9 +111,13 @@ function showAdminPanel() {
 
 function hideAdminPanel() {
     isLoggedIn = false;
+    currentUsername = '';
+    currentPassword = '';
     adminPanel.style.display = 'none';
     loginSection.style.display = 'block';
     sessionStorage.removeItem('adminLoggedIn');
+    sessionStorage.removeItem('adminUsername');
+    sessionStorage.removeItem('adminPassword');
     
     // Clear form
     loginForm.reset();
@@ -166,10 +182,16 @@ async function handleFileUpload(e) {
         return;
     }
     
+    // Use stored credentials from login
+    if (!currentUsername || !currentPassword) {
+        showUploadResult('Please login again.', 'error');
+        return;
+    }
+    
     const formData = new FormData();
     formData.append('excelFile', file);
-    formData.append('username', 'admin'); // Include credentials for multer middleware
-    formData.append('password', 'admin123');
+    formData.append('username', currentUsername);
+    formData.append('password', currentPassword);
     
     try {
         showUploadProgress(true);
