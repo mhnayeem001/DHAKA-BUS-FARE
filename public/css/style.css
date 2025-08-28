@@ -561,42 +561,70 @@ body {
     outline: none;
 }
 
-/* Improved mobile touch targets */
+/* Fully optimized mobile touch targets */
 @media (max-width: 768px) {
+    /* Buttons, form controls, and suggestions */
     .btn, .form-control, .suggestion-item {
-        min-height: 48px;
-        min-width: 48px;
+        min-height: 50px;       /* slightly larger for easier tapping */
+        min-width: 50px;
+        padding: 0.75rem 1rem;  /* better touch padding */
+        font-size: 1rem;        /* readable text */
+        border-radius: 8px;     /* rounded corners for better touch feel */
     }
     
+    /* Current location button */
     #currentLocationBtn {
-        min-width: 44px;
-        min-height: 44px;
+        min-width: 48px;
+        min-height: 48px;
+        padding: 0.6rem;
     }
-    
+
+    /* Fare amount styling */
     .fare-amount {
-        font-size: 2.5rem;
+        font-size: 3rem;       /* larger for clarity */
+        text-align: center;
+        line-height: 1.2;
     }
-    
+
+    /* Fare info container */
     .fare-info {
-        padding: 1.5rem;
-        margin: 1rem 0;
+        padding: 2rem 1.5rem;  /* more spacing for readability */
+        margin: 1.5rem 0;
+        text-align: center;
     }
-    
+
+    /* Route details heading */
     .route-details h5 {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
+        font-size: 1.4rem;
+        margin-bottom: 1.2rem;
+        text-align: center;
     }
-    
+
+    /* Route meta info */
     .route-meta {
         justify-content: center;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;       /* handle small screen wrapping */
+        gap: 0.8rem;           /* spacing between items */
     }
-    
+
+    /* Fare amount container */
     .fare-amount-container {
-        margin-top: 1rem;
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+
+    /* Suggestions list touch-friendly */
+    .suggestion-item {
+        margin-bottom: 0.8rem;
+    }
+
+    /* General mobile-friendly spacing */
+    body, .container {
+        padding: 0 1rem;       /* reduce horizontal scrolling */
+        font-size: 1rem;       /* base font size for mobile */
     }
 }
-
 /* Print Styles */
 @media print {
     .navbar,
